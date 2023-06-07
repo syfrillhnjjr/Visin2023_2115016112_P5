@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DATA PENJUALAN</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    
+    #chart {
+      width: 100%;
+      height: 1000px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+    var queryString = encodeURIComponent('SELECT *');
+    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1KXSOefv1WIqg4Ydjr_6EXzPyMjA8SsusQgF1e5kSclo/gviz/tq?tq=' + queryString);
+
+    query.send(function(response) {
+    if (response.isError()) {
+      console.log('Terjadi kesalahan saat memuat data: ' + response.getMessage());
+      return;
+    }
+
+    var data = response.getDataTable();
+
+    var options = {
+      title: 'Penjualan Kategori Produk pada Beberapa Negara Bagian',
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart'));
+
+    chart.draw(data, options);
+    });
+    }
+   </script>
+</body>
+</html>
